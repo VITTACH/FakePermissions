@@ -1,0 +1,15 @@
+<resources>
+    <string name="permission_header">Разрешить приложению \"%s\" %s</string>
+
+    <!-- Origin permissions -->
+    <string name="permission_call_origin">совершать звонки и управлять ими?</string>
+    <string name="permission_fine_location_origin">доступ к данным о местоположении устройства?</string>
+    <string name="permission_body_sensors">доступ к данным датчиков о состоянии организма?</string>
+    <string name="permission_camera">снимать фото и видео?</string>
+    <string name="permission_read_calendar">доступ к календарю?</string>
+    <string name="permission_read_contacts">доступ к контактам?</string>
+    <string name="permission_read_sms">отправлять и просматривать SMS?</string>
+    <string name="permission_record_audio">записывать аудио?</string>
+    <string name="permission_write_call_log">доступ к списку вызовов?</string>
+
+</resources>

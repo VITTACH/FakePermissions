@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+    }
+
+    kotlinOptions { jvmTarget = "1.8" }
+}
+
+dependencies {
+    implementation rootProject.appCompat
+    implementation rootProject.constraint
+    implementation rootProject.coreKtx
+    implementation rootProject.cardview
+
+    implementation rootProject.coroutines
+    implementation rootProject.kotpref
+}
