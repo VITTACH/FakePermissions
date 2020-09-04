@@ -43,15 +43,16 @@ ext {
     libraryDescription = 'Android FakePermissionTool Library'
 
     siteUrl = 'https://github.com/VITTACH/FakePermission/'
-    gitUrl = 'https://github.com/VITTACH/FakePermission/fakepermission.git'
+    gitUrl = 'https://github.com/VITTACH/FakePermission.git'
 
     libraryVersion = '1.0.0'
 
-    developerId = 'VITTACH'
+    developerId = 'vittach'
     developerName = 'Vitalii'
     developerEmail = 'zharikov.vitalik@yandex.ru'
 
     licenseName = 'GPL-3.0'
+    licenseUrl = 'https://github.com/VITTACH/FakePermission/blob/master/LICENSE'
     allLicenses = ["GPL-3.0"]
 }
 
