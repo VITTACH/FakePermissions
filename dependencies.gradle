@@ -1,0 +1,33 @@
+ext.versions = [
+        'minSdk'             : 26,
+        'compileSdk'         : 29,
+        'targetSdk'          : 29,
+
+        'bintrayPlugin'      : '1.8.4',
+        'mavenPlugin'        : '1.5',
+
+        'androidGradlePlugin': '3.5.3',
+        'kotlin'             : '1.3.61',
+
+        'appCompat'          : '1.1.0',
+        'coroutines'         : '1.3.0',
+        'constraint'         : '2.0.1',
+        'cardView'           : '1.0.0'
+]
+
+ext.libraries = [
+        kotlinStdLib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+
+        appCompat   : "androidx.appcompat:appcompat:${versions.appCompat}",
+        cardView    : "androidx.cardview:cardview:${versions.cardView}",
+        constraint  : "androidx.constraintlayout:constraintlayout:${versions.constraint}",
+        coroutines  : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+]
+
+ext.gradlePlugins = [
+        bintray: "com.jfrog.bintray.gradle:gradle-bintray-plugin:$versions.bintrayPlugin",
+        maven  : "com.github.dcendents:android-maven-gradle-plugin:$versions.mavenPlugin",
+
+        android: "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        kotlin : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+]

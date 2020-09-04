@@ -17,7 +17,6 @@ import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_permission.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -239,7 +238,7 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun changeDialogHeight() {
-        dialogContainer.isVisible = true
+        dialogContainer.visibility = View.VISIBLE
         dialogContainer.layoutParams.height = SMALL_DIALOG_HEIGHT.pxFromDp(this)
     }
 

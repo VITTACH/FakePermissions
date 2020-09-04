@@ -3,7 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        applicationId "com.vittach.fakepermission"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0.0"
+    }
 
     buildTypes {
         release {
@@ -12,18 +20,8 @@ android {
         }
     }
 
-    defaultConfig {
-        applicationId "com.vittach.fakepermission"
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     compileOptions {
@@ -37,13 +35,12 @@ ext {
 }
 
 dependencies {
-    implementation project(':fakepermission')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation rootProject.appCompat
-    implementation rootProject.coreKtx
+    implementation libraries.kotlinStdLib
 
-    implementation rootProject.coroutines
-    implementation rootProject.kotpref
+    implementation libraries.appCompat
+    implementation libraries.coroutines
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
@@ -55,9 +52,9 @@ dependencies {
     // Permissions
     implementation "com.sagar:coroutinespermission:1.0.0"
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+
+    implementation project(':fakepermission')
 }
