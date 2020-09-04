@@ -32,10 +32,18 @@ bintray {
         repo = bintrayRepo
         name = bintrayName
         desc = libraryDescription
+        licenses = allLicenses
         websiteUrl = siteUrl
         vcsUrl = gitUrl
-        licenses = allLicenses
+
         publicDownloadNumbers = true
         publish = true
+
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true
+            }
+        }
     }
 }

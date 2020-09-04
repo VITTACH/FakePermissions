@@ -37,9 +37,13 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.vittach:fakepermission:1.0.0@aar'
+
     implementation libraries.kotlinStdLib
 
     implementation libraries.appCompat
+    implementation libraries.constraint
+    implementation libraries.cardView
     implementation libraries.coroutines
 
     // Lifecycle
@@ -56,5 +60,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
 
-    implementation project(':fakepermission')
+    // implementation project(':fakepermission')
 }
