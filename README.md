@@ -6,7 +6,7 @@ Android Fake Permission Tool
 **Все предоставляется как есть, и не призывает никого к использованию**
 
 ## Демонстрация работы библиотеки
-<img src="Sample.gif" width="220" height="400"/>
+<img src="Samples.gif" width="220" height="400"/>
 
 ## Подключение
 
