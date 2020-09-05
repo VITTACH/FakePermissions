@@ -11,7 +11,6 @@ ext.versions = [
 
         'appCompat'          : '1.1.0',
         'coroutines'         : '1.3.0',
-        'constraint'         : '2.0.1',
         'cardView'           : '1.0.0'
 ]
 
@@ -20,7 +19,6 @@ ext.libraries = [
 
         appCompat   : "androidx.appcompat:appcompat:${versions.appCompat}",
         cardView    : "androidx.cardview:cardview:${versions.cardView}",
-        constraint  : "androidx.constraintlayout:constraintlayout:${versions.constraint}",
         coroutines  : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
 ]
 

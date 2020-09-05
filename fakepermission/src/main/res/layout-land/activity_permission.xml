@@ -1,74 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialogContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    tools:visibility="visible">
 
-    <FrameLayout
-        android:id="@+id/dialogContainer"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        app:cardBackgroundColor="@color/permission_background"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_marginEnd="149dp"
-        android:layout_marginStart="149dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+        android:layout_marginTop="14dp"
+        android:background="@color/permission_background"
+        android:paddingBottom="10dp">
 
-        <androidx.cardview.widget.CardView
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="72.5dp"
+            android:layout_height="36dp"
+            android:adjustViewBounds="true"
+            android:tint="@color/permission_accent"
+            tools:src="@drawable/abc_vector_test" />
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-            app:cardBackgroundColor="@color/permission_background"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="0dp" />
-
-        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="14dp"
-            android:paddingBottom="10dp"
-            android:background="@color/permission_background">
+            android:paddingEnd="16dp">
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="72.5dp"
-                android:layout_height="36dp"
-                android:adjustViewBounds="true"
-                android:tint="@color/permission_accent"
-                tools:src="@drawable/abc_vector_test" />
-
-            <FrameLayout
+            <TextView
+                android:id="@+id/origTextView"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingEnd="16dp">
+                android:fontFamily="sans-serif-medium"
+                android:lineSpacingMultiplier="1.1"
+                android:textScaleX="1.1"
+                android:visibility="invisible" />
 
-                <TextView
-                    android:id="@+id/origTextView"
-                    style="?android:attr/textAppearanceMedium"
-                    android:visibility="invisible"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textScaleX="1.1"
-                    android:lineSpacingMultiplier="1.1"
-                    android:fontFamily="sans-serif-medium" />
+            <TextView
+                android:id="@+id/fakeTextView"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:lineSpacingMultiplier="1.1"
+                android:textColor="@android:color/black"
+                android:textScaleX="1.1"
+                tools:text="@string/permission_header" />
+        </FrameLayout>
 
-                <TextView
-                    android:id="@+id/fakeTextView"
-                    style="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textScaleX="1.1"
-                    android:lineSpacingMultiplier="1.1"
-                    android:fontFamily="sans-serif-medium"
-                    tools:text="@string/permission_header" />
-            </FrameLayout>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </FrameLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

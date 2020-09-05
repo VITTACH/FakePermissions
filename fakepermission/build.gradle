@@ -26,7 +26,6 @@ dependencies {
     implementation libraries.kotlinStdLib
 
     implementation libraries.coroutines
-    implementation libraries.constraint
     implementation libraries.cardView
     implementation libraries.appCompat
 }
@@ -44,7 +43,7 @@ ext {
     siteUrl = 'https://github.com/VITTACH/FakePermission/'
     gitUrl = 'https://github.com/VITTACH/FakePermission.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'vittach'
     developerName = 'Vitalii'

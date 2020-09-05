@@ -72,10 +72,10 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
 
         val portraitBottomMargins =
             intent.extras?.getSerializable(PORTRAIT_BOTTOM_MARGINS) as? Array<Int>
-                ?: arrayOf(100f.pxFromDp(this))
+                ?: arrayOf(50f.pxFromDp(this))
         val landBottomMargins =
             intent.extras?.getSerializable(LAND_BOTTOM_MARGINS) as? Array<Int>
-                ?: arrayOf(70f.pxFromDp(this))
+                ?: arrayOf(40f.pxFromDp(this))
         val portraitSideMargins =
             intent.extras?.getSerializable(PORTRAIT_SIDE_MARGINS) as? Array<Int>
                 ?: arrayOf(28.5f.pxFromDp(this))

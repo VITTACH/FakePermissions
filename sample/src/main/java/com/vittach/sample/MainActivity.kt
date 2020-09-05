@@ -79,27 +79,27 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         )
 
         val portraitBottomMargins = arrayOf(
-            100f.pxFromDp(this),
-            100f.pxFromDp(this),
-            65f.pxFromDp(this),
-            65f.pxFromDp(this),
-            65f.pxFromDp(this),
-            100f.pxFromDp(this),
-            65f.pxFromDp(this),
-            65f.pxFromDp(this),
-            100f.pxFromDp(this)
+            50f.pxFromDp(this),
+            50f.pxFromDp(this),
+            32f.pxFromDp(this),
+            32f.pxFromDp(this),
+            32f.pxFromDp(this),
+            50f.pxFromDp(this),
+            32f.pxFromDp(this),
+            32f.pxFromDp(this),
+            52f.pxFromDp(this)
         )
 
         val landBottomMargins = arrayOf(
-            70f.pxFromDp(this),
-            70f.pxFromDp(this),
-            35f.pxFromDp(this),
-            35f.pxFromDp(this),
-            35f.pxFromDp(this),
-            70f.pxFromDp(this),
-            35f.pxFromDp(this),
-            35f.pxFromDp(this),
-            70f.pxFromDp(this)
+            40f.pxFromDp(this),
+            40f.pxFromDp(this),
+            22f.pxFromDp(this),
+            22f.pxFromDp(this),
+            22f.pxFromDp(this),
+            40f.pxFromDp(this),
+            22f.pxFromDp(this),
+            22f.pxFromDp(this),
+            40f.pxFromDp(this)
         )
 
         val portraitSideMargins = arrayOf(
@@ -121,13 +121,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         startActivity(
             Intent(this, PermissionActivity::class.java)
                 .apply {
+                    putExtra(ORIGIN_PERMISSIONS, originPermissions)
+                    putExtra(FAKE_PERMISSIONS, fakePermissions)
+                    putExtra(FAKE_ICONS, fakeIcons)
                     putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
                     putExtra(PORTRAIT_SIDE_MARGINS, portraitSideMargins)
                     putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
                     putExtra(LAND_SIDE_MARGINS, landSideMargins)
-                    putExtra(ORIGIN_PERMISSIONS, originPermissions)
-                    putExtra(FAKE_PERMISSIONS, fakePermissions)
-                    putExtra(FAKE_ICONS, fakeIcons)
                 }
         )
     }

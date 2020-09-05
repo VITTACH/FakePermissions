@@ -1,4 +1,3 @@
 rootProject.name='FakePermission'
 include ':fakepermission'
 include ':sample'
-include ':app'

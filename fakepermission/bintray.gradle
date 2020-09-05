@@ -36,14 +36,14 @@ bintray {
         websiteUrl = siteUrl
         vcsUrl = gitUrl
 
-        publicDownloadNumbers = true
-        publish = true
-
         version {
             desc = libraryDescription
             gpg {
                 sign = true
             }
         }
+
+        publicDownloadNumbers = true
+        publish = true
     }
 }
