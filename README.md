@@ -19,7 +19,7 @@ repositories {
 ```
 А также добавть в build.gradle модуля вашего приложения
 ```
-implementation 'com.vittach:fakepermission:1.0.0@aar'
+implementation 'com.vittach:fakepermission:1.0.1@aar'
 ```
 ## Настройка и пример использования
 
@@ -36,13 +36,13 @@ com.sagar:coroutinespermission:1.0.0
 startActivity(
     Intent(this, PermissionActivity::class.java)
         .apply {
+            putExtra(ORIGIN_PERMISSIONS, originPermissions)
+            putExtra(FAKE_PERMISSIONS, fakePermissions)
+            putExtra(FAKE_ICONS, fakeIcons)
             putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
             putExtra(PORTRAIT_SIDE_MARGINS, portraitSideMargins)
             putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
             putExtra(LAND_SIDE_MARGINS, landSideMargins)
-            putExtra(ORIGIN_PERMISSIONS, originPermissions)
-            putExtra(FAKE_PERMISSIONS, fakePermissions)
-            putExtra(FAKE_ICONS, fakeIcons)
         }
 )
 ```
@@ -72,8 +72,8 @@ startActivity(
 * **portraitBottomMargins**
     ```
     val portraitBottomMargins: Array<Int> = arrayOf(
-        100f.pxFromDp(this),
-        65f.pxFromDp(this),
+        50f.pxFromDp(this),
+        32f.pxFromDp(this),
         ...
     }
     ```
