@@ -71,7 +71,7 @@ startActivity(
 Вы можете настраивать отступы снизу и по бокам для каждого из выдаваемых пермишенов по порядку их запроса так, чтобы добиться полного перекрытия исходного текста. Поддерживается настройка как для портретной так и ландшафтной ориентации.
 * **portraitBottomMargins**
     ```
-    val portraitBottomMargins: Array<Float> = arrayOf(
+    val portraitBottomMargins: Array<Int> = arrayOf(
         100f.pxFromDp(this),
         65f.pxFromDp(this),
         ...
