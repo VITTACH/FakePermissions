@@ -21,6 +21,12 @@ repositories {
 ```
 implementation 'com.vittach:fakepermission:1.0.1@aar'
 ```
+Укажите активити в файле манифеста
+```
+<activity
+    android:name=".PermissionActivity"
+    android:theme="@style/Theme.Transparent" />
+```
 ## Настройка и пример использования
 
 Для активации библиотеки необходимо запустить ее активити *PermissionActivity* и передать нужные конфигурационные параметры сразу строго ПОСЛЕ вызова системного диалога на выдачу пермишенов.
