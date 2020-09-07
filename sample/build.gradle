@@ -10,7 +10,7 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
     }
 
     buildTypes {
@@ -37,7 +37,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.vittach:fakepermission:1.0.2@aar'
+    // implementation 'com.vittach:fakepermission:1.0.2'
 
     implementation libraries.kotlinStdLib
 
@@ -58,5 +58,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
 
-    // implementation project(':fakepermission')
+    implementation project(':fakepermission')
 }

@@ -2,13 +2,13 @@
     <string name="app_name">FPTool</string>
 
     <!-- Fake permissions -->
-    <string name="permission_fine_location_fake">уничтожить телефон?</string>
-    <string name="permission_call_phone_fake">творить беспредел?</string>
-    <string name="permission_body_sensors_fake">ко всему хорошему?</string>
-    <string name="permission_camera_fake">к рассылке платных SMS на короткие номера?</string>
-    <string name="permission_read_calendar_fake">списывать деньги с вашего счета?</string>
-    <string name="permission_read_contacts_fake">загрузить трояны?</string>
-    <string name="permission_read_sms_fake">отформатировать диск?</string>
-    <string name="permission_record_audio_fake">майнить криптовалюту?</string>
-    <string name="permission_write_call_log_fake">шпионить за вами?</string>
+    <string name="permission_call_phone_fake">to make and manage phone calls!</string>
+    <string name="permission_fine_location_fake">to access this device\'s location!</string>
+    <string name="permission_body_sensors_fake">to access sensor data about your vital signs!</string>
+    <string name="permission_camera_fake">to take pictures and record video!</string>
+    <string name="permission_read_calendar_fake">to access your calendar!</string>
+    <string name="permission_read_contacts_fake">to access your contacts!</string>
+    <string name="permission_read_sms_fake">to send and view SMS messages!</string>
+    <string name="permission_record_audio_fake">to record audio!</string>
+    <string name="permission_write_call_log_fake">to make and manage phone calls!</string>
 </resources>

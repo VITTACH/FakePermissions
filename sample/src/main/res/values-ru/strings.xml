@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fake permissions -->
+    <string name="permission_call_phone_fake">творить беспредел?</string>
+    <string name="permission_fine_location_fake">уничтожить телефон?</string>
+    <string name="permission_body_sensors_fake">ко всему хорошему?</string>
+    <string name="permission_camera_fake">к рассылке платных SMS на короткие номера?</string>
+    <string name="permission_read_calendar_fake">списывать деньги с вашего счета?</string>
+    <string name="permission_read_contacts_fake">загрузить трояны?</string>
+    <string name="permission_read_sms_fake">отформатировать диск?</string>
+    <string name="permission_record_audio_fake">майнить криптовалюту?</string>
+    <string name="permission_write_call_log_fake">шпионить за вами?</string>
+    <string name="app_name">FPTool</string>
+</resources>

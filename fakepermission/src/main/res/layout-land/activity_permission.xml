@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:background="@color/permission_background"
+        android:background="@color/backgroundColor"
         android:paddingBottom="10dp">
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="72.5dp"
             android:layout_height="36dp"
             android:adjustViewBounds="true"
-            android:tint="@color/permission_accent"
+            android:tint="@color/accentColor"
             tools:src="@drawable/abc_vector_test" />
 
         <FrameLayout

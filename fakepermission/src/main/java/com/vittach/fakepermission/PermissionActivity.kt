@@ -6,10 +6,14 @@ import android.animation.Animator.AnimatorListener
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.WINDOW_ANIMATION_SCALE
 import android.provider.Settings.Global.getFloat
+import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -17,6 +21,7 @@ import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.activity_permission.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +55,12 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
 
         const val ORIGIN_PERMISSIONS = "ORIGIN_PERMISSIONS"
         const val FAKE_PERMISSIONS = "FAKE_PERMISSIONS"
+
         const val FAKE_ICONS = "FAKE_ICONS"
+
+        const val TEXT_COLOR = "TEXT_COLOR"
+        const val ACCENT_COLOR = "ACCENT_COLOR"
+        const val FONT_FAMILY = "FONT_FAMILY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +98,10 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
         val fakePermissions = intent.extras?.getStringArray(FAKE_PERMISSIONS) ?: emptyArray()
         val fakeIcons = intent.extras?.getSerializable(FAKE_ICONS) as? Array<Int> ?: emptyArray()
 
+        val textColor = intent.extras?.getInt(TEXT_COLOR) ?: getColor(R.color.textColor)
+        val accentColor = intent.extras?.getInt(ACCENT_COLOR) ?: getColor(R.color.accentColor)
+        val fontFamily = intent.extras?.getString(FONT_FAMILY) ?: "sans-serif-medium"
+
         var newIndex = 0
         while (isPermissionGranted(originPermissions[newIndex])) {
             newIndex++
@@ -105,6 +119,9 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
             landBottomMargins,
             portraitSideMargins,
             portraitBottomMargins,
+            textColor,
+            fontFamily,
+            accentColor,
             fakeIcons,
             originResources[newIndex],
             fakePermissions[newIndex]
@@ -142,6 +159,9 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
                         landBottomMargins,
                         portraitSideMargins,
                         portraitBottomMargins,
+                        textColor,
+                        fontFamily,
+                        accentColor,
                         fakeIcons,
                         originResources[newIndex],
                         fakePermissions[newIndex]
@@ -169,6 +189,9 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
         landBottomMargins: Array<Int>,
         portraitSideMargins: Array<Int>,
         portraitBottomMargins: Array<Int>,
+        textColor: Int,
+        fontFamily: String,
+        accentColor: Int,
         fakeIcons: Array<Int>,
         originPermission: String,
         fakePermission: String
@@ -178,11 +201,22 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
         val landBottomMargin = landBottomMargins[min(i, landBottomMargins.size - 1)]
         val portraitBottomMargin = portraitBottomMargins[min(i, portraitBottomMargins.size - 1)]
         val fakeIcon = fakeIcons.getOrNull(min(i, max(fakeIcons.size - 1, 0)))
-
         val duration = getFloat(contentResolver, WINDOW_ANIMATION_SCALE, 1.0f)
+        val fontColor = Integer.toHexString(textColor).substring(2)
+        val fontTypeFace = Typeface.create(fontFamily, Typeface.NORMAL)
 
-        origTextView.text = getString(R.string.permission_header, appName, originPermission)
-        fakeTextView.text = getString(R.string.permission_header, appName, fakePermission)
+        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(accentColor))
+
+        val header = getString(R.string.permission_header)
+        val formattedText = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            "$header $appName $fakePermission"
+        } else {
+            Html.fromHtml("<font color=#$fontColor>$header</font> $appName <font color=#$fontColor>$fakePermission</font>")
+        }
+        origTextView.text = "$header $appName $originPermission"
+        fakeTextView.text = formattedText
+        origTextView.typeface = fontTypeFace
+        fakeTextView.typeface = fontTypeFace
 
         val layoutParams = dialogContainer.layoutParams as ViewGroup.MarginLayoutParams
 
@@ -252,10 +286,10 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
             Manifest.permission.READ_SMS -> getString(R.string.permission_read_sms)
             Manifest.permission.RECORD_AUDIO -> getString(R.string.permission_record_audio)
             Manifest.permission.WRITE_CALL_LOG -> getString(R.string.permission_write_call_log)
-            Manifest.permission.CALL_PHONE -> getString(R.string.permission_call_origin)
+            Manifest.permission.CALL_PHONE -> getString(R.string.permission_call_phone_origin)
             else -> ""
         }
-        getString(R.string.permission_header, appName, permissionString)
+        "${getString(R.string.permission_header)} $appName $permissionString"
     }.toTypedArray()
 }
 

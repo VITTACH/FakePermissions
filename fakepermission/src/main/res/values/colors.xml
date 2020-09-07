@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="permission_accent">#118675</color>
-    <color name="permission_background">#FCFCFC</color>
+    <color name="textColor">#646464</color>
+    <color name="accentColor">#118675</color>
+    <color name="backgroundColor">#FCFCFC</color>
 </resources>

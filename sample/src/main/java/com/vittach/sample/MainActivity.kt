@@ -5,14 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.vittach.fakepermission.PermissionActivity
+import com.vittach.fakepermission.PermissionActivity.Companion.ACCENT_COLOR
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_BOTTOM_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_ICONS
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_PERMISSIONS
+import com.vittach.fakepermission.PermissionActivity.Companion.FONT_FAMILY
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_SIDE_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.ORIGIN_PERMISSIONS
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_SIDE_MARGINS
-import com.vittach.fakepermission.R
+import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
 import com.vittach.fakepermission.pxFromDp
 import com.vittach.sample.utils.PermissionsHelper
 import kotlinx.android.synthetic.main.activity_main.*
@@ -121,6 +123,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         startActivity(
             Intent(this, PermissionActivity::class.java)
                 .apply {
+                    putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
+                    putExtra(TEXT_COLOR, getColor(R.color.textColor))
+                    putExtra(FONT_FAMILY, "sans-serif-medium")
                     putExtra(ORIGIN_PERMISSIONS, originPermissions)
                     putExtra(FAKE_PERMISSIONS, fakePermissions)
                     putExtra(FAKE_ICONS, fakeIcons)
