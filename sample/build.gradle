@@ -37,7 +37,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // implementation 'com.vittach:fakepermission:1.0.2'
+    // implementation 'com.vittach:fakepermission:1.0.3'
 
     implementation libraries.kotlinStdLib
 
