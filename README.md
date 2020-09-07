@@ -10,21 +10,14 @@ Android Fake Permission Tool
 
 ## Подключение
 
-Добавьте зависимость в build.gradle проекта
+Добавьте в build.gradle модуля вашего приложения
 ```
-repositories {
-    maven { url "https://dl.bintray.com/vittach/FakePermission" }
-    ...
-}
-```
-А также добавть в build.gradle модуля вашего приложения
-```
-implementation 'com.vittach:fakepermission:1.0.1@aar'
+implementation 'com.vittach:fakepermission:1.0.2'
 ```
 Укажите активити в файле манифеста
 ```
 <activity
-    android:name=".PermissionActivity"
+    android:name="com.vittach.fakepermission.PermissionActivity"
     android:theme="@style/Theme.Transparent" />
 ```
 ## Настройка и пример использования
