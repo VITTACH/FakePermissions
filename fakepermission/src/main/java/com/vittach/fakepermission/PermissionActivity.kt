@@ -208,7 +208,7 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
         ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(accentColor))
 
         val header = getString(R.string.permission_header)
-        val formattedText = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+        val formattedText = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
             "$header $appName $fakePermission"
         } else {
             Html.fromHtml("<font color=#$fontColor>$header</font> $appName <font color=#$fontColor>$fakePermission</font>")
