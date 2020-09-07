@@ -42,7 +42,6 @@ dependencies {
     implementation libraries.kotlinStdLib
 
     implementation libraries.appCompat
-    implementation libraries.cardView
     implementation libraries.coroutines
 
     // Lifecycle

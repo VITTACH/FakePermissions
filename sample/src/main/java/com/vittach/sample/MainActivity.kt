@@ -91,15 +91,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         )
 
         val landBottomMargins = arrayOf(
-            40f.pxFromDp(this),
-            40f.pxFromDp(this),
-            22f.pxFromDp(this),
-            22f.pxFromDp(this),
-            22f.pxFromDp(this),
-            40f.pxFromDp(this),
-            22f.pxFromDp(this),
-            22f.pxFromDp(this),
-            40f.pxFromDp(this)
+            38f.pxFromDp(this),
+            38f.pxFromDp(this),
+            20f.pxFromDp(this),
+            20f.pxFromDp(this),
+            20f.pxFromDp(this),
+            38f.pxFromDp(this),
+            20f.pxFromDp(this),
+            20f.pxFromDp(this),
+            38f.pxFromDp(this)
         )
 
         val portraitSideMargins = arrayOf(
