@@ -25,7 +25,6 @@ dependencies {
 
     implementation libraries.kotlinStdLib
 
-    implementation libraries.coroutines
     implementation libraries.appCompat
 }
 

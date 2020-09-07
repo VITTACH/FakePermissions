@@ -9,15 +9,13 @@ ext.versions = [
         'androidGradlePlugin': '3.5.3',
         'kotlin'             : '1.3.61',
 
-        'appCompat'          : '1.1.0',
-        'coroutines'         : '1.3.0'
+        'appCompat'          : '1.1.0'
 ]
 
 ext.libraries = [
         kotlinStdLib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
 
-        appCompat   : "androidx.appcompat:appcompat:${versions.appCompat}",
-        coroutines  : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+        appCompat   : "androidx.appcompat:appcompat:${versions.appCompat}"
 ]
 
 ext.gradlePlugins = [

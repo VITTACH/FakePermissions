@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Typeface
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.WINDOW_ANIMATION_SCALE
@@ -23,19 +24,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.activity_permission.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
 
 
-class PermissionActivity : AppCompatActivity(), CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Main
+class PermissionActivity : AppCompatActivity() {
 
     private lateinit var appName: String
 
@@ -110,6 +103,7 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
                 return // All permissions was granted
             }
         }
+        var oldIndex = newIndex
 
         changeDialogHeight()
         changePermission(
@@ -132,43 +126,51 @@ class PermissionActivity : AppCompatActivity(), CoroutineScope {
             permissionStatus.add(isPermissionGranted(permission))
         }
 
-        launch {
-            var oldIndex = newIndex
-            ticker(delayMillis = 100).consumeEach {
-                if (activityManager.appTasks[0].taskInfo.numActivities < initActivitiesNum) {
-                    finish()
-                    cancel()
-                    return@launch // Handle closing request permissions dialog to finish job
-                }
 
-                for (k in originPermissions.indices) {
-                    val isGranted = isPermissionGranted(originPermissions[k])
-                    if (permissionStatus[k] != isGranted) {
-                        permissionStatus[k] = isGranted
-                        newIndex = k + 1
+        class WatchDog : AsyncTask<Unit, Unit, Unit>() {
+            override fun doInBackground(vararg p0: Unit) {
+                while (true) {
+                    if (activityManager.appTasks[0].taskInfo.numActivities < initActivitiesNum) {
+                        finish()
                         break
                     }
-                }
 
-                if (newIndex != oldIndex && newIndex < originPermissions.size) {
-                    oldIndex = newIndex
-                    changePermission(
-                        true,
-                        newIndex,
-                        landSideMargins,
-                        landBottomMargins,
-                        portraitSideMargins,
-                        portraitBottomMargins,
-                        textColor,
-                        fontFamily,
-                        accentColor,
-                        fakeIcons,
-                        originResources[newIndex],
-                        fakePermissions[newIndex]
-                    )
+                    for (k in originPermissions.indices) {
+                        val isWasGranted = isPermissionGranted(originPermissions[k])
+                        if (permissionStatus[k] != isWasGranted) {
+                            permissionStatus[k] = isWasGranted
+                            newIndex = k + 1
+                            break
+                        }
+                    }
+
+                    if (newIndex != oldIndex && newIndex < originPermissions.size) {
+                        oldIndex = newIndex
+                        publishProgress()
+                    }
                 }
             }
+
+            override fun onProgressUpdate(vararg values: Unit) {
+                super.onProgressUpdate(*values)
+                changePermission(
+                    true,
+                    newIndex,
+                    landSideMargins,
+                    landBottomMargins,
+                    portraitSideMargins,
+                    portraitBottomMargins,
+                    textColor,
+                    fontFamily,
+                    accentColor,
+                    fakeIcons,
+                    originResources[newIndex],
+                    fakePermissions[newIndex]
+                )
+            }
         }
+
+        WatchDog().execute()
     }
 
     private fun startInitAnimation() {

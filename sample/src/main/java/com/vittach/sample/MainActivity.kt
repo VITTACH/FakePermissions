@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.vittach.fakepermission.PermissionActivity
 import com.vittach.fakepermission.PermissionActivity.Companion.ACCENT_COLOR
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
@@ -16,25 +17,14 @@ import com.vittach.fakepermission.PermissionActivity.Companion.ORIGIN_PERMISSION
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_SIDE_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
 import com.vittach.fakepermission.pxFromDp
-import com.vittach.sample.utils.PermissionsHelper
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Main.immediate
-
-    private val permissionsHelper: PermissionsHelper by inject()
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        permissionsHelper.attach(this)
 
         val permissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -49,10 +39,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         )
 
         permissionButton.setOnClickListener {
-
-            launch {
-                permissionsHelper.requestPermission(*permissions)
-            }
+            ActivityCompat.requestPermissions(this, permissions, 1)
             showFakePermissions(permissions)
         }
     }
