@@ -91,9 +91,19 @@ class PermissionActivity : AppCompatActivity() {
         val fakePermissions = intent.extras?.getStringArray(FAKE_PERMISSIONS) ?: emptyArray()
         val fakeIcons = intent.extras?.getSerializable(FAKE_ICONS) as? Array<Int> ?: emptyArray()
 
-        val textColor = intent.extras?.getInt(TEXT_COLOR) ?: getColor(R.color.textColor)
-        val accentColor = intent.extras?.getInt(ACCENT_COLOR) ?: getColor(R.color.accentColor)
-        val fontFamily = intent.extras?.getString(FONT_FAMILY) ?: "sans-serif-medium"
+        val textColor = (intent.extras?.getInt(TEXT_COLOR) ?: getColor(R.color.textColor)).let {
+            Integer.toHexString(it).substring(2)
+        }
+
+        intent.extras?.getInt(ACCENT_COLOR)?.let {
+            ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(it))
+        }
+
+        intent.extras?.getString(FONT_FAMILY)?.let {
+            val fontTypeFace = Typeface.create(it, Typeface.NORMAL)
+            origTextView.typeface = fontTypeFace
+            fakeTextView.typeface = fontTypeFace
+        }
 
         var newIndex = 0
         while (isPermissionGranted(originPermissions[newIndex])) {
@@ -114,8 +124,6 @@ class PermissionActivity : AppCompatActivity() {
             portraitSideMargins,
             portraitBottomMargins,
             textColor,
-            fontFamily,
-            accentColor,
             fakeIcons,
             originResources[newIndex],
             fakePermissions[newIndex]
@@ -161,8 +169,6 @@ class PermissionActivity : AppCompatActivity() {
                     portraitSideMargins,
                     portraitBottomMargins,
                     textColor,
-                    fontFamily,
-                    accentColor,
                     fakeIcons,
                     originResources[newIndex],
                     fakePermissions[newIndex]
@@ -191,9 +197,7 @@ class PermissionActivity : AppCompatActivity() {
         landBottomMargins: Array<Int>,
         portraitSideMargins: Array<Int>,
         portraitBottomMargins: Array<Int>,
-        textColor: Int,
-        fontFamily: String,
-        accentColor: Int,
+        textColor: String,
         fakeIcons: Array<Int>,
         originPermission: String,
         fakePermission: String
@@ -204,21 +208,15 @@ class PermissionActivity : AppCompatActivity() {
         val portraitBottomMargin = portraitBottomMargins[min(i, portraitBottomMargins.size - 1)]
         val fakeIcon = fakeIcons.getOrNull(min(i, max(fakeIcons.size - 1, 0)))
         val duration = getFloat(contentResolver, WINDOW_ANIMATION_SCALE, 1.0f)
-        val fontColor = Integer.toHexString(textColor).substring(2)
-        val fontTypeFace = Typeface.create(fontFamily, Typeface.NORMAL)
-
-        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(accentColor))
 
         val header = getString(R.string.permission_header)
         val formattedText = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
             "$header $appName $fakePermission"
         } else {
-            Html.fromHtml("<font color=#$fontColor>$header</font> $appName <font color=#$fontColor>$fakePermission</font>")
+            Html.fromHtml("<font color=#$textColor>$header</font> $appName <font color=#$textColor>$fakePermission</font>")
         }
         origTextView.text = "$header $appName $originPermission"
         fakeTextView.text = formattedText
-        origTextView.typeface = fontTypeFace
-        fakeTextView.typeface = fontTypeFace
 
         val layoutParams = dialogContainer.layoutParams as ViewGroup.MarginLayoutParams
 
