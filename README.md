@@ -1,7 +1,7 @@
 # FakePermission
 Android Fake Permission Tool
 
-Библиотека предоставляет возможность перекрывать системный диалог выдачи разрешений начиная с Android 6.0. Таким образом вы сможете незаметно для конечного пользователя выдавать вашему приложению нужные разрешения, вводя пользователя в заблуждение, заставляя его соглашаться с тем что он увидит, а не с тем, что будет в действительности.
+Библиотека предоставляет возможность перекрывать системный диалог выдачи разрешений начиная с Android 7.1.1 (Api 25). Таким образом вы сможете незаметно для конечного пользователя выдавать вашему приложению нужные разрешения, вводя пользователя в заблуждение, заставляя его соглашаться с тем что он увидит, а не с тем, что будет в действительности.
 
 **Все предоставляется как есть, и не призывает никого к использованию**
 
@@ -12,7 +12,14 @@ Android Fake Permission Tool
 
 Добавьте в build.gradle модуля вашего приложения
 ```
-implementation 'com.vittach:fakepermission:1.0.2'
+implementation 'com.vittach:fakepermission:1.0.3'
+```
+Создайте стиль
+```
+<style name="Theme.Transparent" parent="AppTheme">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsTranslucent">true</item>
+</style>
 ```
 Укажите активити в файле манифеста
 ```
@@ -35,6 +42,9 @@ com.sagar:coroutinespermission:1.0.0
 startActivity(
     Intent(this, PermissionActivity::class.java)
         .apply {
+            putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
+            putExtra(TEXT_COLOR, getColor(R.color.textColor))
+            putExtra(FONT_FAMILY, "sans-serif-medium")
             putExtra(ORIGIN_PERMISSIONS, originPermissions)
             putExtra(FAKE_PERMISSIONS, fakePermissions)
             putExtra(FAKE_ICONS, fakeIcons)
@@ -46,7 +56,7 @@ startActivity(
 )
 ```
 #### Обязательные конфигурационные параметры:
-* **originPermissions**
+* **ORIGIN_PERMISSIONS**
     ```
     val originPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -54,7 +64,7 @@ startActivity(
         ...
     )
     ```
-* **fakePermissions**
+* **FAKE_PERMISSIONS**
 
     Массив строк, текст которых будет отображаться поверх реального. Размерность массива должна совпадать с массивом *originPermissions*.
     Если кастомный текст по длине будет больше чем исходный, то перекрываемая область увеличится
@@ -68,7 +78,7 @@ startActivity(
     ```
 #### Необязательные конфигурационные параметры:
 Вы можете настраивать отступы снизу и по бокам для каждого из выдаваемых пермишенов по порядку их запроса так, чтобы добиться полного перекрытия исходного текста. Поддерживается настройка как для портретной так и ландшафтной ориентации.
-* **portraitBottomMargins**
+* **PORTRAIT_BOTTOM_MARGINS**
     ```
     val portraitBottomMargins: Array<Int> = arrayOf(
         50f.pxFromDp(this),
@@ -76,12 +86,12 @@ startActivity(
         ...
     }
     ```
-* **portraitSideMargins**
-* **landBottomMargins**
-* **landSideMargins**
+* **PORTRAIT_SIDE_MARGINS**
+* **LAND_BOTTOM_MARGINS**
+* **LAND_SIDE_MARGINS**
 
 Вы также можете установить свои иконки для каждого из запрашиваемых разрешений. При этом размерность массива может не совпадать с массивом *originPermissions*, в таком случае в качестве иконки, когда очередь до нее дойдет, будет использоваться последняя.
-* **fakeIcons**
+* **FAKE_ICONS**
     ```
     val fakeIcons: Array<Int> = arrayOf(
         R.drawable.ic_location,
@@ -89,3 +99,6 @@ startActivity(
         ...
     )
     ```
+* **ACCENT_COLOR** - используется для тинтования иконки
+* **TEXT_COLOR** - используется приминительно к тексту
+* **FONT_FAMILY** - поддерживаются стандартные шрифты
