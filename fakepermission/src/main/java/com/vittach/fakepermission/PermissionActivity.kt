@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.provider.Settings.Global.WINDOW_ANIMATION_SCALE
 import android.provider.Settings.Global.getFloat
 import android.text.Html
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -43,8 +44,8 @@ class PermissionActivity : AppCompatActivity() {
         const val PORTRAIT_BOTTOM_MARGINS = "PORTRAIT_BOTTOM_MARGINS"
         const val LAND_BOTTOM_MARGINS = "LAND_BOTTOM_MARGINS"
 
-        const val PORTRAIT_SIDE_MARGINS = "PORTRAIT_SIDE_MARGINS"
-        const val LAND_SIDE_MARGINS = "LAND_SIDE_MARGINS"
+        const val PORTRAIT_WIDTH = "PORTRAIT_WIDTH"
+        const val LAND_WIDTH = "LAND_WIDTH"
 
         const val ORIGIN_PERMISSIONS = "ORIGIN_PERMISSIONS"
         const val FAKE_PERMISSIONS = "FAKE_PERMISSIONS"
@@ -54,13 +55,20 @@ class PermissionActivity : AppCompatActivity() {
         const val TEXT_COLOR = "TEXT_COLOR"
         const val ACCENT_COLOR = "ACCENT_COLOR"
         const val FONT_FAMILY = "FONT_FAMILY"
+
+        fun isTablet(context: Context): Boolean {
+            val xlarge =
+                context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_XLARGE
+            val large =
+                context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_LARGE
+            return xlarge || large
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
-        // прокидвание нажатия скозь активити
         window.addFlags(FLAG_NOT_FOCUSABLE or FLAG_NOT_TOUCH_MODAL or FLAG_NOT_TOUCHABLE)
 
         appName = applicationInfo.loadLabel(packageManager).toString()
@@ -73,18 +81,22 @@ class PermissionActivity : AppCompatActivity() {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val initActivitiesNum = activityManager.appTasks[0].taskInfo.numActivities
 
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+
         val portraitBottomMargins =
             intent.extras?.getSerializable(PORTRAIT_BOTTOM_MARGINS) as? Array<Int>
                 ?: arrayOf(50f.pxFromDp(this))
-        val landBottomMargins =
-            intent.extras?.getSerializable(LAND_BOTTOM_MARGINS) as? Array<Int>
-                ?: arrayOf(38f.pxFromDp(this))
-        val portraitSideMargins =
-            intent.extras?.getSerializable(PORTRAIT_SIDE_MARGINS) as? Array<Int>
-                ?: arrayOf(28.5f.pxFromDp(this))
-        val landSideMargins =
-            intent.extras?.getSerializable(LAND_SIDE_MARGINS) as? Array<Int>
-                ?: arrayOf(149f.pxFromDp(this))
+        val landBottomMargins = intent.extras?.getSerializable(LAND_BOTTOM_MARGINS) as? Array<Int>
+            ?: arrayOf(38f.pxFromDp(this))
+
+        val portraitWidths = (intent.extras?.getSerializable(PORTRAIT_WIDTH) as? Array<Int>)
+            ?.map { it + getBasePortraitWidth(screenWidth) }
+            ?: listOf(getBasePortraitWidth(screenWidth))
+        val landWidths = (intent.extras?.getSerializable(LAND_WIDTH) as? Array<Int>)
+            ?.map { it + getBaseLandWidth(screenWidth) }
+            ?: listOf(getBaseLandWidth(screenWidth))
 
         val originPermissions = intent.extras?.getStringArray(ORIGIN_PERMISSIONS) ?: emptyArray()
         val originResources = originPermissions.toStringArray()
@@ -119,9 +131,9 @@ class PermissionActivity : AppCompatActivity() {
         changePermission(
             false,
             newIndex,
-            landSideMargins,
+            landWidths,
             landBottomMargins,
-            portraitSideMargins,
+            portraitWidths,
             portraitBottomMargins,
             textColor,
             fakeIcons,
@@ -164,9 +176,9 @@ class PermissionActivity : AppCompatActivity() {
                 changePermission(
                     true,
                     newIndex,
-                    landSideMargins,
+                    landWidths,
                     landBottomMargins,
-                    portraitSideMargins,
+                    portraitWidths,
                     portraitBottomMargins,
                     textColor,
                     fakeIcons,
@@ -193,17 +205,15 @@ class PermissionActivity : AppCompatActivity() {
     private fun changePermission(
         hasAnimation: Boolean,
         i: Int,
-        landSideMargins: Array<Int>,
+        landWidths: List<Int>,
         landBottomMargins: Array<Int>,
-        portraitSideMargins: Array<Int>,
+        portraitWidths: List<Int>,
         portraitBottomMargins: Array<Int>,
         textColor: String,
         fakeIcons: Array<Int>,
         originPermission: String,
         fakePermission: String
     ) {
-        val landSideMargin = landSideMargins[min(i, landSideMargins.size - 1)]
-        val portraitSideMargin = portraitSideMargins[min(i, portraitSideMargins.size - 1)]
         val landBottomMargin = landBottomMargins[min(i, landBottomMargins.size - 1)]
         val portraitBottomMargin = portraitBottomMargins[min(i, portraitBottomMargins.size - 1)]
         val fakeIcon = fakeIcons.getOrNull(min(i, max(fakeIcons.size - 1, 0)))
@@ -218,19 +228,16 @@ class PermissionActivity : AppCompatActivity() {
         origTextView.text = "$header $appName $originPermission"
         fakeTextView.text = formattedText
 
-        val layoutParams = dialogContainer.layoutParams as ViewGroup.MarginLayoutParams
-
+        val layoutParams = dialogContainer.layoutParams
+        val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            layoutParams.leftMargin = landSideMargin
-            layoutParams.rightMargin = landSideMargin
-            layoutParams.bottomMargin = landBottomMargin
+            marginLayoutParams.bottomMargin = landBottomMargin
+            layoutParams.width = landWidths[min(i, landWidths.size - 1)]
         } else {
-            layoutParams.leftMargin = portraitSideMargin
-            layoutParams.rightMargin = portraitSideMargin
-            layoutParams.bottomMargin = portraitBottomMargin
+            marginLayoutParams.bottomMargin = portraitBottomMargin
+            layoutParams.width = portraitWidths[min(i, portraitWidths.size - 1)]
         }
-
-        dialogContainer.layoutParams = layoutParams
+        dialogContainer.layoutParams = marginLayoutParams
 
         if (hasAnimation) {
             fakeTextView.translationX = fakeTextView.width.toFloat()
@@ -265,6 +272,14 @@ class PermissionActivity : AppCompatActivity() {
                 icon.setImageResource(fakeIcon)
             } ?: run { icon.visibility = View.INVISIBLE }
         }
+    }
+
+    private fun getBasePortraitWidth(screenWidth: Int): Int {
+        return (if (isTablet(this)) 3 / 5 else 16 / 17) * screenWidth
+    }
+
+    private fun getBaseLandWidth(screenWidth: Int): Int {
+        return (if (isTablet(this)) 4 / 8 else 4 / 6) * screenWidth
     }
 
     private fun isPermissionGranted(permission: String): Boolean {

@@ -7,15 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.vittach.fakepermission.PermissionActivity
 import com.vittach.fakepermission.PermissionActivity.Companion.ACCENT_COLOR
-import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
-import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_BOTTOM_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_ICONS
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_PERMISSIONS
 import com.vittach.fakepermission.PermissionActivity.Companion.FONT_FAMILY
-import com.vittach.fakepermission.PermissionActivity.Companion.LAND_SIDE_MARGINS
+import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
+import com.vittach.fakepermission.PermissionActivity.Companion.LAND_WIDTH
 import com.vittach.fakepermission.PermissionActivity.Companion.ORIGIN_PERMISSIONS
-import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_SIDE_MARGINS
+import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_BOTTOM_MARGINS
+import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_WIDTH
 import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
+import com.vittach.fakepermission.PermissionActivity.Companion.isTablet
 import com.vittach.fakepermission.pxFromDp
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -80,31 +81,32 @@ class MainActivity : AppCompatActivity() {
         )
 
         val landBottomMargins = arrayOf(
-            38f.pxFromDp(this),
-            38f.pxFromDp(this),
-            20f.pxFromDp(this),
-            20f.pxFromDp(this),
-            20f.pxFromDp(this),
-            38f.pxFromDp(this),
-            20f.pxFromDp(this),
-            20f.pxFromDp(this),
-            38f.pxFromDp(this)
+            34f.pxFromDp(this),
+            34f.pxFromDp(this),
+            16f.pxFromDp(this),
+            16f.pxFromDp(this),
+            16f.pxFromDp(this),
+            34f.pxFromDp(this),
+            16f.pxFromDp(this),
+            16f.pxFromDp(this),
+            34f.pxFromDp(this)
         )
 
-        val portraitSideMargins = arrayOf(
-            28.5f.pxFromDp(this)
-        )
+        val portraitWidths = if (isTablet(this)) {
+            arrayOf(36f.pxFromDp(this))
+        } else {
+            arrayOf(0f.pxFromDp(this))
+        }
 
-        val landSideMargin = 149f.pxFromDp(this)
-        val landSideMargins = arrayOf(
-            landSideMargin,
-            landSideMargin,
-            landSideMargin,
-            landSideMargin,
-            landSideMargin,
-            landSideMargin,
-            154.5f.pxFromDp(this),
-            landSideMargin
+        val landWidths = arrayOf(
+            0f.pxFromDp(this),
+            0f.pxFromDp(this),
+            0f.pxFromDp(this),
+            0f.pxFromDp(this),
+            -4f.pxFromDp(this),
+            0f.pxFromDp(this),
+            -14f.pxFromDp(this),
+            0f.pxFromDp(this)
         )
 
         startActivity(
@@ -112,14 +114,14 @@ class MainActivity : AppCompatActivity() {
                 .apply {
                     putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
                     putExtra(TEXT_COLOR, getColor(R.color.textColor))
-                    putExtra(FONT_FAMILY, "sans-serif-medium")
+                    putExtra(FONT_FAMILY, "sans-serif")
                     putExtra(ORIGIN_PERMISSIONS, originPermissions)
                     putExtra(FAKE_PERMISSIONS, fakePermissions)
                     putExtra(FAKE_ICONS, fakeIcons)
                     putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
-                    putExtra(PORTRAIT_SIDE_MARGINS, portraitSideMargins)
+                    putExtra(PORTRAIT_WIDTH, portraitWidths)
                     putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
-                    putExtra(LAND_SIDE_MARGINS, landSideMargins)
+                    putExtra(LAND_WIDTH, landWidths)
                 }
         )
     }

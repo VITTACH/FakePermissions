@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:paddingEnd="0.5dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:visibility="gone"
     tools:visibility="visible">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:background="@drawable/rounded_rectangle"/>
+        android:background="@drawable/rounded_rectangle" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                 style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif"
                 android:lineSpacingMultiplier="1.1"
                 android:textScaleX="1.1"
                 android:visibility="invisible" />
@@ -50,7 +51,7 @@
                 style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif"
                 android:lineSpacingMultiplier="1.1"
                 android:textColor="@android:color/black"
                 android:textScaleX="1.1"
