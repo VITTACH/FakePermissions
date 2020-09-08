@@ -55,14 +55,6 @@ class PermissionActivity : AppCompatActivity() {
         const val TEXT_COLOR = "TEXT_COLOR"
         const val ACCENT_COLOR = "ACCENT_COLOR"
         const val FONT_FAMILY = "FONT_FAMILY"
-
-        fun isTablet(context: Context): Boolean {
-            val xlarge =
-                context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_XLARGE
-            val large =
-                context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_LARGE
-            return xlarge || large
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +69,14 @@ class PermissionActivity : AppCompatActivity() {
         startWatchDog()
     }
 
+    private fun isTablet(): Boolean {
+        val xlarge =
+            resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_XLARGE
+        val large =
+            resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_LARGE
+        return xlarge || large
+    }
+
     private fun startWatchDog() {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val initActivitiesNum = activityManager.appTasks[0].taskInfo.numActivities
@@ -86,10 +86,12 @@ class PermissionActivity : AppCompatActivity() {
         val screenWidth = displayMetrics.widthPixels
 
         val portraitBottomMargins =
-            intent.extras?.getSerializable(PORTRAIT_BOTTOM_MARGINS) as? Array<Int>
-                ?: arrayOf(50f.pxFromDp(this))
-        val landBottomMargins = intent.extras?.getSerializable(LAND_BOTTOM_MARGINS) as? Array<Int>
-            ?: arrayOf(38f.pxFromDp(this))
+            (intent.extras?.getSerializable(PORTRAIT_BOTTOM_MARGINS) as? Array<Int>)
+                ?.map { it + getBasePortraitBottom() }
+                ?: listOf(getBasePortraitBottom())
+        val landBottomMargins = (intent.extras?.getSerializable(LAND_BOTTOM_MARGINS) as? Array<Int>)
+            ?.map { it + getBaseLandBottom() }
+            ?: listOf(getBaseLandBottom())
 
         val portraitWidths = (intent.extras?.getSerializable(PORTRAIT_WIDTH) as? Array<Int>)
             ?.map { it + getBasePortraitWidth(screenWidth) }
@@ -206,9 +208,9 @@ class PermissionActivity : AppCompatActivity() {
         hasAnimation: Boolean,
         i: Int,
         landWidths: List<Int>,
-        landBottomMargins: Array<Int>,
+        landBottomMargins: List<Int>,
         portraitWidths: List<Int>,
-        portraitBottomMargins: Array<Int>,
+        portraitBottomMargins: List<Int>,
         textColor: String,
         fakeIcons: Array<Int>,
         originPermission: String,
@@ -275,11 +277,19 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     private fun getBasePortraitWidth(screenWidth: Int): Int {
-        return (if (isTablet(this)) 3 / 5 else 16 / 17) * screenWidth
+        return ((if (isTablet()) 6f / 9f else 16f / 17f) * screenWidth).toInt()
     }
 
     private fun getBaseLandWidth(screenWidth: Int): Int {
-        return (if (isTablet(this)) 4 / 8 else 4 / 6) * screenWidth
+        return ((if (isTablet()) 4f / 8f else 4f / 6f) * screenWidth).toInt()
+    }
+
+    private fun getBasePortraitBottom(): Int {
+        return (if (isTablet()) 32f else 20f).pxFromDp(this)
+    }
+
+    private fun getBaseLandBottom(): Int {
+        return (if (isTablet()) 36f else 24f).pxFromDp(this)
     }
 
     private fun isPermissionGranted(permission: String): Boolean {

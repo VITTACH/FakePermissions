@@ -16,7 +16,6 @@ import com.vittach.fakepermission.PermissionActivity.Companion.ORIGIN_PERMISSION
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_BOTTOM_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_WIDTH
 import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
-import com.vittach.fakepermission.PermissionActivity.Companion.isTablet
 import com.vittach.fakepermission.pxFromDp
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -81,22 +80,18 @@ class MainActivity : AppCompatActivity() {
         )
 
         val landBottomMargins = arrayOf(
-            34f.pxFromDp(this),
-            34f.pxFromDp(this),
-            16f.pxFromDp(this),
-            16f.pxFromDp(this),
-            16f.pxFromDp(this),
-            34f.pxFromDp(this),
-            16f.pxFromDp(this),
-            16f.pxFromDp(this),
-            34f.pxFromDp(this)
+            36f.pxFromDp(this),
+            36f.pxFromDp(this),
+            18f.pxFromDp(this),
+            18f.pxFromDp(this),
+            18f.pxFromDp(this),
+            36f.pxFromDp(this),
+            18f.pxFromDp(this),
+            18f.pxFromDp(this),
+            36f.pxFromDp(this)
         )
 
-        val portraitWidths = if (isTablet(this)) {
-            arrayOf(36f.pxFromDp(this))
-        } else {
-            arrayOf(0f.pxFromDp(this))
-        }
+        val portraitWidths = arrayOf(0f.pxFromDp(this))
 
         val landWidths = arrayOf(
             0f.pxFromDp(this),
