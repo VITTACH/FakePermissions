@@ -42,16 +42,19 @@ com.sagar:coroutinespermission:1.0.0
 startActivity(
     Intent(this, PermissionActivity::class.java)
         .apply {
-            putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
-            putExtra(TEXT_COLOR, getColor(R.color.textColor))
-            putExtra(FONT_FAMILY, "sans-serif-medium")
             putExtra(ORIGIN_PERMISSIONS, originPermissions)
             putExtra(FAKE_PERMISSIONS, fakePermissions)
             putExtra(FAKE_ICONS, fakeIcons)
+            
+            putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
+            putExtra(TEXT_COLOR, getColor(R.color.textColor))
+            putExtra(FONT_FAMILY, "sans-serif")
+            putExtra(FIRST_SHOWN, true)
+            
             putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
-            putExtra(PORTRAIT_SIDE_MARGINS, portraitSideMargins)
             putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
-            putExtra(LAND_SIDE_MARGINS, landSideMargins)
+            putExtra(PORTRAIT_WIDTHS, portraitWidths)
+            putExtra(LAND_WIDTHS, landWidths)
         }
 )
 ```
@@ -67,7 +70,7 @@ startActivity(
 * **FAKE_PERMISSIONS**
 
     Массив строк, текст которых будет отображаться поверх реального. Размерность массива должна совпадать с массивом *originPermissions*.
-    Если кастомный текст по длине будет больше чем исходный, то он будет обрезан.
+    Если кастомный текст по числу строк будет больше чем исходный, то он будет обрезан.
 
     ```
     val fakePermissions: Array<String> = arrayOf(
@@ -86,11 +89,11 @@ startActivity(
         ...
     }
     ```
-* **PORTRAIT_WIDTH**
+* **PORTRAIT_WIDTHS**
 * **LAND_BOTTOM_MARGINS**
-* **LAND_WIDTH**
+* **LAND_WIDTHS**
 
-Вы также можете установить свои иконки для каждого из запрашиваемых разрешений. При этом размерность массива может не совпадать с массивом *originPermissions*, в таком случае в качестве иконки, когда очередь до нее дойдет, будет использоваться последняя.
+Вы также можете установить свои иконки для каждого из запрашиваемых разрешений. При этом размерность массива может не совпадать с массивом *originPermissions*, в таком случае в качестве иконки, когда очередь дойдет, будет использоваться последняя.
 * **FAKE_ICONS**
     ```
     val fakeIcons: Array<Int> = arrayOf(
