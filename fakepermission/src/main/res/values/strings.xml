@@ -11,5 +11,8 @@
     <string name="permission_read_sms">to send and view SMS messages?</string>
     <string name="permission_record_audio">to record audio?</string>
     <string name="permission_write_call_log">to make and manage phone calls?</string>
-
+    
+    <string name="grant_dialog_button_deny">Deny</string>
+    <string name="grant_dialog_button_allow">Allow</string>
+    <string name="never_ask_again">Never ask again</string>
 </resources>

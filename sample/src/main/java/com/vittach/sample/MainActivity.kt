@@ -9,6 +9,7 @@ import com.vittach.fakepermission.PermissionActivity
 import com.vittach.fakepermission.PermissionActivity.Companion.ACCENT_COLOR
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_ICONS
 import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_PERMISSIONS
+import com.vittach.fakepermission.PermissionActivity.Companion.FIRST_SHOWN
 import com.vittach.fakepermission.PermissionActivity.Companion.FONT_FAMILY
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_WIDTH
@@ -18,6 +19,7 @@ import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_WIDTH
 import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
 import com.vittach.fakepermission.pxFromDp
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -67,42 +69,14 @@ class MainActivity : AppCompatActivity() {
             R.drawable.ic_anchor
         )
 
-        val portraitBottomMargins = arrayOf(
-            50f.pxFromDp(this),
-            50f.pxFromDp(this),
-            32f.pxFromDp(this),
-            32f.pxFromDp(this),
-            32f.pxFromDp(this),
-            50f.pxFromDp(this),
-            32f.pxFromDp(this),
-            32f.pxFromDp(this),
-            52f.pxFromDp(this)
-        )
+        val ZERO = 0f.pxFromDp(this)
+        val portraitBottomMargins = arrayOf(ZERO)
 
-        val landBottomMargins = arrayOf(
-            36f.pxFromDp(this),
-            36f.pxFromDp(this),
-            18f.pxFromDp(this),
-            18f.pxFromDp(this),
-            18f.pxFromDp(this),
-            36f.pxFromDp(this),
-            18f.pxFromDp(this),
-            18f.pxFromDp(this),
-            36f.pxFromDp(this)
-        )
+        val landBottomMargins = arrayOf(ZERO)
 
-        val portraitWidths = arrayOf(0f.pxFromDp(this))
+        val portraitWidths = arrayOf(ZERO)
 
-        val landWidths = arrayOf(
-            0f.pxFromDp(this),
-            0f.pxFromDp(this),
-            0f.pxFromDp(this),
-            0f.pxFromDp(this),
-            -4f.pxFromDp(this),
-            0f.pxFromDp(this),
-            -14f.pxFromDp(this),
-            0f.pxFromDp(this)
-        )
+        val landWidths = arrayOf(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, -11f.pxFromDp(this), ZERO)
 
         startActivity(
             Intent(this, PermissionActivity::class.java)
@@ -117,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                     putExtra(PORTRAIT_WIDTH, portraitWidths)
                     putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
                     putExtra(LAND_WIDTH, landWidths)
+                    putExtra(FIRST_SHOWN, Random().nextBoolean())
                 }
         )
     }

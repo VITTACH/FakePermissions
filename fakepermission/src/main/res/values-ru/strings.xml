@@ -13,4 +13,7 @@
     <string name="permission_record_audio">записывать аудио?</string>
     <string name="permission_write_call_log">доступ к списку вызовов?</string>
 
+    <string name="grant_dialog_button_deny">Отклонить</string>
+    <string name="grant_dialog_button_allow">Разрешить</string>
+    <string name="never_ask_again">Больше не спрашивать</string>
 </resources>

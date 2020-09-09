@@ -18,9 +18,7 @@ import android.text.Html
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+import android.view.WindowManager.LayoutParams.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
@@ -33,13 +31,13 @@ class PermissionActivity : AppCompatActivity() {
 
     private lateinit var appName: String
 
+    private var watchdogTask: AsyncTask<Unit, Unit, Unit>? = null
+
     companion object {
         private const val TRANSLATE_START_DELAY: Long = 210
         private const val TRANSLATE_Y_LENGTH: Long = 650
         private const val TRANSLATE_X_LENGTH: Long = 500
         private const val SCALE_XY_LENGTH: Long = 500
-
-        private const val SMALL_DIALOG_HEIGHT = 140f
 
         const val PORTRAIT_BOTTOM_MARGINS = "PORTRAIT_BOTTOM_MARGINS"
         const val LAND_BOTTOM_MARGINS = "LAND_BOTTOM_MARGINS"
@@ -55,6 +53,8 @@ class PermissionActivity : AppCompatActivity() {
         const val TEXT_COLOR = "TEXT_COLOR"
         const val ACCENT_COLOR = "ACCENT_COLOR"
         const val FONT_FAMILY = "FONT_FAMILY"
+
+        const val FIRST_SHOWN = "FIRST_SHOWN"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +67,11 @@ class PermissionActivity : AppCompatActivity() {
 
         startInitAnimation()
         startWatchDog()
+    }
+
+    override fun onDestroy() {
+        watchdogTask?.cancel(true)
+        super.onDestroy()
     }
 
     private fun isTablet(): Boolean {
@@ -100,6 +105,10 @@ class PermissionActivity : AppCompatActivity() {
             ?.map { it + getBaseLandWidth(screenWidth) }
             ?: listOf(getBaseLandWidth(screenWidth))
 
+        intent.extras?.getBoolean(FIRST_SHOWN, true)?.let { isFirstShown ->
+            do_not_ask_checkbox.visibility = if (isFirstShown) View.GONE else View.INVISIBLE
+        }
+
         val originPermissions = intent.extras?.getStringArray(ORIGIN_PERMISSIONS) ?: emptyArray()
         val originResources = originPermissions.toStringArray()
         val fakePermissions = intent.extras?.getStringArray(FAKE_PERMISSIONS) ?: emptyArray()
@@ -115,7 +124,6 @@ class PermissionActivity : AppCompatActivity() {
 
         intent.extras?.getString(FONT_FAMILY)?.let {
             val fontTypeFace = Typeface.create(it, Typeface.NORMAL)
-            origTextView.typeface = fontTypeFace
             fakeTextView.typeface = fontTypeFace
         }
 
@@ -129,7 +137,7 @@ class PermissionActivity : AppCompatActivity() {
         }
         var oldIndex = newIndex
 
-        changeDialogHeight()
+        rootView.visibility = View.VISIBLE
         changePermission(
             false,
             newIndex,
@@ -190,14 +198,14 @@ class PermissionActivity : AppCompatActivity() {
             }
         }
 
-        WatchDog().execute()
+        watchdogTask = WatchDog().execute()
     }
 
     private fun startInitAnimation() {
         val duration = getFloat(contentResolver, WINDOW_ANIMATION_SCALE, 1.0f)
 
-        dialogContainer.translationY = 20f.pxFromDp(this).toFloat()
-        dialogContainer.animate()
+        rootView.translationY = 20f.pxFromDp(this).toFloat()
+        rootView.animate()
             .setStartDelay(TRANSLATE_START_DELAY)
             .setDuration((duration * TRANSLATE_Y_LENGTH).toLong())
             .translationY(0f)
@@ -213,7 +221,7 @@ class PermissionActivity : AppCompatActivity() {
         portraitBottomMargins: List<Int>,
         textColor: String,
         fakeIcons: Array<Int>,
-        originPermission: String,
+        formattedOrigin: String,
         fakePermission: String
     ) {
         val landBottomMargin = landBottomMargins[min(i, landBottomMargins.size - 1)]
@@ -222,24 +230,28 @@ class PermissionActivity : AppCompatActivity() {
         val duration = getFloat(contentResolver, WINDOW_ANIMATION_SCALE, 1.0f)
 
         val header = getString(R.string.permission_header)
-        val formattedText = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
-            "$header $appName $fakePermission"
+        val formattedFake = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
+            "$header \"$appName\" $fakePermission"
         } else {
             Html.fromHtml("<font color=#$textColor>$header</font> $appName <font color=#$textColor>$fakePermission</font>")
         }
-        origTextView.text = "$header $appName $originPermission"
-        fakeTextView.text = formattedText
 
-        val layoutParams = dialogContainer.layoutParams
-        val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+        fakeTextView.text = formattedOrigin
+        fakeTextView.post {
+            val originHeight = fakeTextView.measuredHeight
+            fakeTextView.text = formattedFake
+            fakeTextView.layoutParams.height = originHeight
+        }
+
+        val marginLayoutParams = rootView.layoutParams as ViewGroup.MarginLayoutParams
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             marginLayoutParams.bottomMargin = landBottomMargin
-            layoutParams.width = landWidths[min(i, landWidths.size - 1)]
+            marginLayoutParams.width = landWidths[min(i, landWidths.size - 1)]
         } else {
             marginLayoutParams.bottomMargin = portraitBottomMargin
-            layoutParams.width = portraitWidths[min(i, portraitWidths.size - 1)]
+            marginLayoutParams.width = portraitWidths[min(i, portraitWidths.size - 1)]
         }
-        dialogContainer.layoutParams = marginLayoutParams
+        rootView.layoutParams = marginLayoutParams
 
         if (hasAnimation) {
             fakeTextView.translationX = fakeTextView.width.toFloat()
@@ -276,29 +288,24 @@ class PermissionActivity : AppCompatActivity() {
         }
     }
 
-    private fun getBasePortraitWidth(screenWidth: Int): Int {
-        return ((if (isTablet()) 6f / 9f else 16f / 17f) * screenWidth).toInt()
+    private fun getBasePortraitWidth(width: Int): Int {
+        return ((if (isTablet()) 6f / 9f else 16f / 17f) * width).toInt() - 32f.pxFromDp(this)
     }
 
-    private fun getBaseLandWidth(screenWidth: Int): Int {
-        return ((if (isTablet()) 4f / 8f else 4f / 6f) * screenWidth).toInt()
+    private fun getBaseLandWidth(width: Int): Int {
+        return ((if (isTablet()) 4f / 8f else 4f / 6f) * width).toInt() - 32f.pxFromDp(this)
     }
 
     private fun getBasePortraitBottom(): Int {
-        return (if (isTablet()) 32f else 20f).pxFromDp(this)
+        return (if (isTablet()) 48f else 28f).pxFromDp(this)
     }
 
     private fun getBaseLandBottom(): Int {
-        return (if (isTablet()) 36f else 24f).pxFromDp(this)
+        return (if (isTablet()) 44f else 24f).pxFromDp(this)
     }
 
     private fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(this, permission) == PERMISSION_GRANTED
-    }
-
-    private fun changeDialogHeight() {
-        dialogContainer.visibility = View.VISIBLE
-        dialogContainer.layoutParams.height = SMALL_DIALOG_HEIGHT.pxFromDp(this)
     }
 
     private fun Array<String>.toStringArray() = this.map {
@@ -314,7 +321,7 @@ class PermissionActivity : AppCompatActivity() {
             Manifest.permission.CALL_PHONE -> getString(R.string.permission_call_phone_origin)
             else -> ""
         }
-        "${getString(R.string.permission_header)} $appName $permissionString"
+        "${getString(R.string.permission_header)} \"$appName\" $permissionString"
     }.toTypedArray()
 }
 
