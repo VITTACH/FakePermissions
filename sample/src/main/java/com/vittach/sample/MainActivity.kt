@@ -12,10 +12,10 @@ import com.vittach.fakepermission.PermissionActivity.Companion.FAKE_PERMISSIONS
 import com.vittach.fakepermission.PermissionActivity.Companion.FIRST_SHOWN
 import com.vittach.fakepermission.PermissionActivity.Companion.FONT_FAMILY
 import com.vittach.fakepermission.PermissionActivity.Companion.LAND_BOTTOM_MARGINS
-import com.vittach.fakepermission.PermissionActivity.Companion.LAND_WIDTH
+import com.vittach.fakepermission.PermissionActivity.Companion.LAND_WIDTHS
 import com.vittach.fakepermission.PermissionActivity.Companion.ORIGIN_PERMISSIONS
 import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_BOTTOM_MARGINS
-import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_WIDTH
+import com.vittach.fakepermission.PermissionActivity.Companion.PORTRAIT_WIDTHS
 import com.vittach.fakepermission.PermissionActivity.Companion.TEXT_COLOR
 import com.vittach.fakepermission.pxFromDp
 import kotlinx.android.synthetic.main.activity_main.*
@@ -88,9 +88,9 @@ class MainActivity : AppCompatActivity() {
                     putExtra(FAKE_PERMISSIONS, fakePermissions)
                     putExtra(FAKE_ICONS, fakeIcons)
                     putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
-                    putExtra(PORTRAIT_WIDTH, portraitWidths)
+                    putExtra(PORTRAIT_WIDTHS, portraitWidths)
                     putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
-                    putExtra(LAND_WIDTH, landWidths)
+                    putExtra(LAND_WIDTHS, landWidths)
                     putExtra(FIRST_SHOWN, Random().nextBoolean())
                 }
         )

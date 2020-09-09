@@ -42,8 +42,8 @@ class PermissionActivity : AppCompatActivity() {
         const val PORTRAIT_BOTTOM_MARGINS = "PORTRAIT_BOTTOM_MARGINS"
         const val LAND_BOTTOM_MARGINS = "LAND_BOTTOM_MARGINS"
 
-        const val PORTRAIT_WIDTH = "PORTRAIT_WIDTH"
-        const val LAND_WIDTH = "LAND_WIDTH"
+        const val PORTRAIT_WIDTHS = "PORTRAIT_WIDTHS"
+        const val LAND_WIDTHS = "LAND_WIDTHS"
 
         const val ORIGIN_PERMISSIONS = "ORIGIN_PERMISSIONS"
         const val FAKE_PERMISSIONS = "FAKE_PERMISSIONS"
@@ -98,10 +98,10 @@ class PermissionActivity : AppCompatActivity() {
             ?.map { it + getBaseLandBottom() }
             ?: listOf(getBaseLandBottom())
 
-        val portraitWidths = (intent.extras?.getSerializable(PORTRAIT_WIDTH) as? Array<Int>)
+        val portraitWidths = (intent.extras?.getSerializable(PORTRAIT_WIDTHS) as? Array<Int>)
             ?.map { it + getBasePortraitWidth(screenWidth) }
             ?: listOf(getBasePortraitWidth(screenWidth))
-        val landWidths = (intent.extras?.getSerializable(LAND_WIDTH) as? Array<Int>)
+        val landWidths = (intent.extras?.getSerializable(LAND_WIDTHS) as? Array<Int>)
             ?.map { it + getBaseLandWidth(screenWidth) }
             ?: listOf(getBaseLandWidth(screenWidth))
 
