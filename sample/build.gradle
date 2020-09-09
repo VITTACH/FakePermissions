@@ -10,7 +10,7 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode 1
-        versionName "1.0.3"
+        versionName "1.0.4"
     }
 
     buildTypes {
@@ -37,7 +37,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // implementation 'com.vittach:fakepermission:1.0.3'
+    // implementation 'com.vittach:fakepermission:1.0.4'
 
     implementation libraries.kotlinStdLib
 

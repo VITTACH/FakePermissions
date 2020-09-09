@@ -41,7 +41,7 @@ ext {
     siteUrl = 'https://github.com/VITTACH/FakePermission/'
     gitUrl = 'https://github.com/VITTACH/FakePermission.git'
 
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.4'
 
     developerId = 'vittach'
     developerName = 'Vitalii'

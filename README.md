@@ -12,7 +12,7 @@ Android Fake Permission Tool
 
 Добавьте в build.gradle модуля вашего приложения
 ```
-implementation 'com.vittach:fakepermission:1.0.3'
+implementation 'com.vittach:fakepermission:1.0.4'
 ```
 Создайте стиль
 ```
