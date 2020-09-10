@@ -9,9 +9,9 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Typeface
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings.Global.WINDOW_ANIMATION_SCALE
 import android.provider.Settings.Global.getFloat
 import android.text.Html
@@ -31,7 +31,8 @@ class PermissionActivity : AppCompatActivity() {
 
     private lateinit var appName: String
 
-    private var watchdogTask: AsyncTask<Unit, Unit, Unit>? = null
+    private val handler = Handler()
+    private var watchDogThread: Thread? = null
 
     companion object {
         private const val TRANSLATE_START_DELAY: Long = 210
@@ -70,7 +71,7 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        watchdogTask?.cancel(true)
+        watchDogThread?.interrupt()
         super.onDestroy()
     }
 
@@ -157,48 +158,43 @@ class PermissionActivity : AppCompatActivity() {
         }
 
 
-        class WatchDog : AsyncTask<Unit, Unit, Unit>() {
-            override fun doInBackground(vararg p0: Unit) {
-                while (true) {
-                    if (activityManager.appTasks[0].taskInfo.numActivities < initActivitiesNum) {
-                        finish()
+        watchDogThread = Thread {
+            while (!Thread.interrupted()) {
+                if (activityManager.appTasks[0].taskInfo.numActivities < initActivitiesNum) {
+                    finish()
+                    break
+                }
+
+                for (k in originPermissions.indices) {
+                    val isWasGranted = isPermissionGranted(originPermissions[k])
+                    if (permissionStatus[k] != isWasGranted) {
+                        permissionStatus[k] = isWasGranted
+                        newIndex = k + 1
                         break
                     }
+                }
 
-                    for (k in originPermissions.indices) {
-                        val isWasGranted = isPermissionGranted(originPermissions[k])
-                        if (permissionStatus[k] != isWasGranted) {
-                            permissionStatus[k] = isWasGranted
-                            newIndex = k + 1
-                            break
-                        }
-                    }
-
-                    if (newIndex != oldIndex && newIndex < originPermissions.size) {
-                        oldIndex = newIndex
-                        publishProgress()
+                if (newIndex != oldIndex && newIndex < originPermissions.size) {
+                    oldIndex = newIndex
+                    handler.post {
+                        changePermission(
+                            true,
+                            newIndex,
+                            landWidths,
+                            landBottomMargins,
+                            portraitWidths,
+                            portraitBottomMargins,
+                            textColor,
+                            fakeIcons,
+                            originResources[newIndex],
+                            fakePermissions[newIndex]
+                        )
                     }
                 }
             }
-
-            override fun onProgressUpdate(vararg values: Unit) {
-                super.onProgressUpdate(*values)
-                changePermission(
-                    true,
-                    newIndex,
-                    landWidths,
-                    landBottomMargins,
-                    portraitWidths,
-                    portraitBottomMargins,
-                    textColor,
-                    fakeIcons,
-                    originResources[newIndex],
-                    fakePermissions[newIndex]
-                )
-            }
         }
 
-        watchdogTask = WatchDog().execute()
+        watchDogThread?.start()
     }
 
     private fun startInitAnimation() {
