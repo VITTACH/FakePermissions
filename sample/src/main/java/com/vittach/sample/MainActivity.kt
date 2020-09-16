@@ -24,11 +24,15 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val REQUEST_PERMISSIONS_CODE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val permissions = arrayOf(
+        val originPermissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.BODY_SENSORS,
             Manifest.permission.CAMERA,
@@ -41,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         )
 
         permissionButton.setOnClickListener {
-            ActivityCompat.requestPermissions(this, permissions, 1)
-            showFakePermissions(permissions)
+            ActivityCompat.requestPermissions(this, originPermissions, REQUEST_PERMISSIONS_CODE)
+            showFakePermissions(originPermissions)
         }
     }
 
@@ -69,30 +73,26 @@ class MainActivity : AppCompatActivity() {
             R.drawable.ic_anchor
         )
 
-        val ZERO = 0f.pxFromDp(this)
-        val portraitBottomMargins = arrayOf(ZERO)
+        val zero = 0f.pxFromDp(this)
+        val portraitBottomMargins = arrayOf(zero)
+        val landBottomMargins = arrayOf(zero)
+        val portraitWidths = arrayOf(zero)
 
-        val landBottomMargins = arrayOf(ZERO)
+        val landWidths = arrayOf(zero, zero, zero, zero, zero, zero, -11f.pxFromDp(this), zero)
 
-        val portraitWidths = arrayOf(ZERO)
-
-        val landWidths = arrayOf(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, -11f.pxFromDp(this), ZERO)
-
-        startActivity(
-            Intent(this, PermissionActivity::class.java)
-                .apply {
-                    putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
-                    putExtra(TEXT_COLOR, getColor(R.color.textColor))
-                    putExtra(FONT_FAMILY, "sans-serif")
-                    putExtra(ORIGIN_PERMISSIONS, originPermissions)
-                    putExtra(FAKE_PERMISSIONS, fakePermissions)
-                    putExtra(FAKE_ICONS, fakeIcons)
-                    putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
-                    putExtra(PORTRAIT_WIDTHS, portraitWidths)
-                    putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
-                    putExtra(LAND_WIDTHS, landWidths)
-                    putExtra(FIRST_SHOWN, Random().nextBoolean())
-                }
-        )
+        startActivity(Intent(this, PermissionActivity::class.java)
+            .apply {
+                putExtra(FIRST_SHOWN, Random().nextBoolean())
+                putExtra(ACCENT_COLOR, getColor(R.color.accentColor))
+                putExtra(TEXT_COLOR, getColor(R.color.textColor))
+                putExtra(FONT_FAMILY, "sans-serif")
+                putExtra(ORIGIN_PERMISSIONS, originPermissions)
+                putExtra(FAKE_PERMISSIONS, fakePermissions)
+                putExtra(FAKE_ICONS, fakeIcons)
+                putExtra(PORTRAIT_BOTTOM_MARGINS, portraitBottomMargins)
+                putExtra(PORTRAIT_WIDTHS, portraitWidths)
+                putExtra(LAND_BOTTOM_MARGINS, landBottomMargins)
+                putExtra(LAND_WIDTHS, landWidths)
+            })
     }
 }

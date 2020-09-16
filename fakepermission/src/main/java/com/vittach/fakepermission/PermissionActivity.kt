@@ -35,6 +35,7 @@ class PermissionActivity : AppCompatActivity() {
     private var watchDogThread: Thread? = null
 
     companion object {
+        private const val TABLET_XDPI = 423
         private const val TRANSLATE_START_DELAY: Long = 210
         private const val TRANSLATE_Y_LENGTH: Long = 650
         private const val TRANSLATE_X_LENGTH: Long = 500
@@ -76,11 +77,12 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     private fun isTablet(): Boolean {
+        val isTabletDpi = resources.displayMetrics.xdpi >= TABLET_XDPI
         val xlarge =
             resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_XLARGE
         val large =
             resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK === Configuration.SCREENLAYOUT_SIZE_LARGE
-        return xlarge || large
+        return xlarge || large || isTabletDpi
     }
 
     private fun startWatchDog() {

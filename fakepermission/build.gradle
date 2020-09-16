@@ -24,7 +24,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation libraries.kotlinStdLib
-
     implementation libraries.appCompat
 }
 
@@ -41,19 +40,16 @@ ext {
     siteUrl = 'https://github.com/VITTACH/FakePermission/'
     gitUrl = 'https://github.com/VITTACH/FakePermission.git'
 
+    licenseName = 'GPL-3.0'
+    licenseUrl = 'https://github.com/VITTACH/FakePermission/blob/master/LICENSE'
+    allLicenses = ["GPL-3.0"]
+
     libraryVersion = '1.0.4'
 
     developerId = 'vittach'
     developerName = 'Vitalii'
     developerEmail = 'zharikov.vitalik@yandex.ru'
-
-    licenseName = 'GPL-3.0'
-    licenseUrl = 'https://github.com/VITTACH/FakePermission/blob/master/LICENSE'
-    allLicenses = ["GPL-3.0"]
 }
-
-//Add these lines to publish library to bintray.
-//Place it at the end of the file
 
 apply from: 'install.gradle'
 apply from: 'bintray.gradle'

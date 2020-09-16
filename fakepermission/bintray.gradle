@@ -2,13 +2,12 @@ apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
 
-if (project.hasProperty("android")) { // Android libraries
+if (project.hasProperty("android")) {
     task sourcesJar(type: Jar) {
         archiveClassifier = 'sources'
         from android.sourceSets.main.java.srcDirs
     }
-
-} else { // Java libraries
+} else {
     task sourcesJar(type: Jar, dependsOn: classes) {
         archiveClassifier = 'sources'
         from sourceSets.main.allSource
@@ -19,7 +18,6 @@ artifacts {
     archives sourcesJar
 }
 
-// Bintray
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
@@ -36,14 +34,14 @@ bintray {
         websiteUrl = siteUrl
         vcsUrl = gitUrl
 
+        publicDownloadNumbers = true;
+        publish = true
+
         version {
             desc = libraryDescription
             gpg {
                 sign = true
             }
         }
-
-        publicDownloadNumbers = true
-        publish = true
     }
 }
